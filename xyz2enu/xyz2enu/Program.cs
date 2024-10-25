@@ -54,7 +54,7 @@ namespace xyz2enu
         static void Main(string[] args)
         {
             // Check if the user provided exactly three file paths
-            if (args.Length != 3)
+            if (args.Length != 6)
             {
                 Console.WriteLine("Please provide exactly three file paths as arguments.");
                 return;
@@ -129,9 +129,13 @@ namespace xyz2enu
                 File.WriteAllText(outputfile, "#Site:" + stationname + Environment.NewLine);
                 File.WriteAllText(outputfile2, "#Site:" + stationname + Environment.NewLine);
 
-                double refX = CalculateMean(XYZ_list[0]);
-                double refY = CalculateMean(XYZ_list[1]);
-                double refZ = CalculateMean(XYZ_list[2]);
+                //double refX = CalculateMean(XYZ_list[0]);
+                //double refY = CalculateMean(XYZ_list[1]);
+                //double refZ = CalculateMean(XYZ_list[2]);
+
+                double refX = Double.Parse(args[3], CultureInfo.InvariantCulture);
+                double refY = Double.Parse(args[4], CultureInfo.InvariantCulture);
+                double refZ = Double.Parse(args[5], CultureInfo.InvariantCulture);
 
                 File.AppendAllText(outputfile, "#X:" + refX.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
                 File.AppendAllText(outputfile, "#Y:" + refY.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
