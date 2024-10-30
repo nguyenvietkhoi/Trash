@@ -129,13 +129,9 @@ namespace xyz2enu
                 File.WriteAllText(outputfile, "#Site:" + stationname + Environment.NewLine);
                 File.WriteAllText(outputfile2, "#Site:" + stationname + Environment.NewLine);
 
-                //double refX = CalculateMean(XYZ_list[0]);
-                //double refY = CalculateMean(XYZ_list[1]);
-                //double refZ = CalculateMean(XYZ_list[2]);
-
-                double refX = Double.Parse(args[3], CultureInfo.InvariantCulture);
-                double refY = Double.Parse(args[4], CultureInfo.InvariantCulture);
-                double refZ = Double.Parse(args[5], CultureInfo.InvariantCulture);
+                double refX = CalculateMean(XYZ_list[0]);
+                double refY = CalculateMean(XYZ_list[1]);
+                double refZ = CalculateMean(XYZ_list[2]);
 
                 File.AppendAllText(outputfile, "#X:" + refX.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
                 File.AppendAllText(outputfile, "#Y:" + refY.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
@@ -147,11 +143,15 @@ namespace xyz2enu
                 File.AppendAllText(outputfile2, "#Z:" + refZ.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
                 File.AppendAllText(outputfile2, "#   T         N        E        U" + Environment.NewLine);
 
+                refX = Double.Parse(args[3], CultureInfo.InvariantCulture);
+                refY = Double.Parse(args[4], CultureInfo.InvariantCulture);
+                refZ = Double.Parse(args[5], CultureInfo.InvariantCulture);
+
                 for (int j = 0; j < T_list.Count; j++)
                 {
                     var enu = XYZtoENU(XYZ_list[0][j], XYZ_list[1][j], XYZ_list[2][j], refX, refY, refZ);
-                    File.AppendAllText(outputfile, (T_list[j] * 365).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + enu.E.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(8) + " " + enu.N.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(8) + " " + enu.U.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(8) + Environment.NewLine);
-                    File.AppendAllText(outputfile2, T_list[j].ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + (enu.E * 1000).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(8) + " " + (enu.N * 1000).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(8) + " " + (enu.U * 1000).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(8) + Environment.NewLine);
+                    File.AppendAllText(outputfile, (T_list[j] * 365).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + (enu.E * 1).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + " " + (enu.N * 1).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + " " + (enu.U * 1).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
+                    File.AppendAllText(outputfile2, T_list[j].ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + (enu.E * 1).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + " " + (enu.N * 1).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + " " + (enu.U * 1).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
                 }
                 Console.WriteLine("Successfully.");
             }
