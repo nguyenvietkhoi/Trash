@@ -151,7 +151,7 @@ namespace xyz2enu
                 {
                     var enu = XYZtoENU(XYZ_list[0][j], XYZ_list[1][j], XYZ_list[2][j], refX, refY, refZ);
                     File.AppendAllText(outputfile, (T_list[j] * 365).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
-                    File.AppendAllText(outputfile2, T_list[j].ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
+                    File.AppendAllText(outputfile2, T_list[j].ToString($"F4", CultureInfo.InvariantCulture).PadLeft(9) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
                 }
                 Console.WriteLine("Successfully.");
             }
