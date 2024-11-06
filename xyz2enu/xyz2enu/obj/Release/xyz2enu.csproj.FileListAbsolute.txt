@@ -4,4 +4,3 @@ J:\Projects\xyz2enu\xyz2enu\bin\Release\xyz2enu.pdb
 J:\Projects\xyz2enu\xyz2enu\obj\Release\xyz2enu.csproj.CoreCompileInputs.cache
 J:\Projects\xyz2enu\xyz2enu\obj\Release\xyz2enu.exe
 J:\Projects\xyz2enu\xyz2enu\obj\Release\xyz2enu.pdb
-J:\Projects\xyz2enu\xyz2enu\obj\Release\xyz2enu.csproj.AssemblyReference.cache
