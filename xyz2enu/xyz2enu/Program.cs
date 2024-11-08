@@ -82,10 +82,10 @@ namespace xyz2enu
                         Double Z = Double.Parse(fields[3], CultureInfo.InvariantCulture);
                         int year = 0;
 
-                        Double[,] TXYZ_list = new Double[366,4];
+                        Double[,] TXYZ_list = new Double[365,4];
 
                         // Initialize each list in the array
-                        for (int i = 0; i < 366; i++)
+                        for (int i = 0; i < 365; i++)
                         {
                             TXYZ_list[i, 0] = 0.5 / 365.0 + i / 365.0;
                             for (int j = 1; j < 4; j++)
@@ -167,7 +167,7 @@ namespace xyz2enu
                             File.AppendAllText(outputfile2, "#Z:" + refZ.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
                             File.AppendAllText(outputfile2, "#   T         N        E        U" + Environment.NewLine);
 
-                            for (int j = 0; j < 366; j++)
+                            for (int j = 0; j < 365; j++)
                             {
                                 var enu = XYZtoENU(TXYZ_list[j, 1], TXYZ_list[j, 2], TXYZ_list[j, 3], X, Y, Z);
                                 File.AppendAllText(outputfile, (0.5 + j + (year + 1) * 365.0).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
