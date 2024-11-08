@@ -1,0 +1,7 @@
+J:\Projects\mergeenu\mergeenu\bin\Debug\mergeenu.exe.config
+J:\Projects\mergeenu\mergeenu\bin\Debug\mergeenu.exe
+J:\Projects\mergeenu\mergeenu\bin\Debug\mergeenu.pdb
+J:\Projects\mergeenu\mergeenu\obj\Debug\mergeenu.csproj.AssemblyReference.cache
+J:\Projects\mergeenu\mergeenu\obj\Debug\mergeenu.csproj.CoreCompileInputs.cache
+J:\Projects\mergeenu\mergeenu\obj\Debug\mergeenu.exe
+J:\Projects\mergeenu\mergeenu\obj\Debug\mergeenu.pdb
