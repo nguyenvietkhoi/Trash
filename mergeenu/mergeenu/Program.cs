@@ -56,6 +56,35 @@ namespace mergeenu
             return count > 0 ? sum / count : double.NaN;
         }
 
+        // Method to check if a year is a leap year
+        static bool IsLeapYear(int year)
+        {
+            return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+        }
+
+        // Method to calculate total days between two years (inclusive)
+        static int CalculateDaysBetweenYears(int startYear, int noYear)
+        {
+            int totalDays = 0;
+            int endYear = startYear + noYear;
+
+            // Loop through all years from startYear to endYear (inclusive)
+            for (int year = startYear; year < endYear; year++)
+            {
+                if (IsLeapYear(year))
+                {
+                    totalDays += 366;  // Leap year has 366 days
+                }
+                else
+                {
+                    totalDays += 365;  // Normal year has 365 days
+                }
+            }
+
+            return totalDays;
+        }
+
+
         static void Main(string[] args)
         {
             // Check if the user provided exactly three file paths
@@ -84,17 +113,23 @@ namespace mergeenu
                         Double Y = Double.Parse(fields[2], CultureInfo.InvariantCulture);
                         Double Z = Double.Parse(fields[3], CultureInfo.InvariantCulture);
 
-                        Double[,] NEU_list = new Double[n_year*365, 4];
+                        Double[,] NEU_list = new Double[CalculateDaysBetweenYears(year, n_year), 4];
 
                         // Initialize each list in the array
-                        for (int i = 0; i < NEU_list.GetLength(0); i++)
+                        for (int k = 0; k < n_year; k++)
                         {
-                            NEU_list[i, 0] = 0.5 / 365.0 + i / 365.0;
-                            for (int j = 1; j < 4; j++)
+                            int numberofdays = CalculateDaysBetweenYears(year + k, 1);
+                            int curindex = CalculateDaysBetweenYears(year, k);
+                            for (int i = 0; i < numberofdays; i++)
                             {
-                                NEU_list[i, j] = Double.NaN;
+                                NEU_list[curindex + i, 0] = 0.5 / numberofdays + 1.0 / numberofdays * i + k;
+                                for (int j = 1; j < 4; j++)
+                                {
+                                    NEU_list[curindex + i, j] = Double.NaN;
+                                }
                             }
                         }
+                            
 
                         // Iterate through each provided file path
                         for (int i = 1; i < 4; i++)
@@ -127,7 +162,10 @@ namespace mergeenu
                                         }
 
                                         Double T = Double.Parse(parts[0], CultureInfo.InvariantCulture);
-                                        rowid = (int)Math.Round(((T - year) - (1.0 / (365.0 * 2))) * 365);
+                                        int curyear = (int)T;
+
+                                        int numberofdays = CalculateDaysBetweenYears(curyear, 1);
+                                        rowid = (int)Math.Round(((T % 1) - (0.5 / numberofdays)) * numberofdays + CalculateDaysBetweenYears(year, curyear - year));
 
                                         if (rowid < 0)
                                         {
@@ -178,8 +216,8 @@ namespace mergeenu
 
                             for (int j = 0; j < NEU_list.GetLength(0); j++)
                             {
-                                File.AppendAllText(outputfile, (0.5 + j + (year + 1) * 365.0).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,1]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,2]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,3]) + Environment.NewLine);
-                                File.AppendAllText(outputfile2, (0.5 / 365.0 + j / 365.0 + year).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(9) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,1]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,2]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,3]) + Environment.NewLine);
+                                File.AppendAllText(outputfile, string.Format(CultureInfo.InvariantCulture, "{0,9:0.0000}", (NEU_list[j, 0]+year+1)*365) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,1]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,2]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,3]) + Environment.NewLine);
+                                File.AppendAllText(outputfile2, string.Format(CultureInfo.InvariantCulture, "{0,9:0.0000}", NEU_list[j, 0] + year) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,1]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,2]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,3]) + Environment.NewLine);
                             }
                             Console.WriteLine("Successfully.");
                         }
