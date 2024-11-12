@@ -4,4 +4,3 @@ J:\Projects\mergeenu\mergeenu\bin\Release\mergeenu.pdb
 J:\Projects\mergeenu\mergeenu\obj\Release\mergeenu.csproj.CoreCompileInputs.cache
 J:\Projects\mergeenu\mergeenu\obj\Release\mergeenu.exe
 J:\Projects\mergeenu\mergeenu\obj\Release\mergeenu.pdb
-J:\Projects\mergeenu\mergeenu\obj\Release\mergeenu.csproj.AssemblyReference.cache

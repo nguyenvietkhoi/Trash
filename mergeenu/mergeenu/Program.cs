@@ -216,7 +216,9 @@ namespace mergeenu
 
                             for (int j = 0; j < NEU_list.GetLength(0); j++)
                             {
-                                File.AppendAllText(outputfile, string.Format(CultureInfo.InvariantCulture, "{0,9:0.0000}", (NEU_list[j, 0]+year+1)*365) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,1]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,2]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,3]) + Environment.NewLine);
+                                int numberofdays = CalculateDaysBetweenYears((int)NEU_list[j, 0] + year, 1);
+                                int curindex = CalculateDaysBetweenYears(year, (int)NEU_list[j, 0]);
+                                File.AppendAllText(outputfile, string.Format(CultureInfo.InvariantCulture, "{0,9:0.0000}", (NEU_list[j, 0] %1)* numberofdays + (year+1)*365 + curindex) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,1]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,2]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,3]) + Environment.NewLine);
                                 File.AppendAllText(outputfile2, string.Format(CultureInfo.InvariantCulture, "{0,9:0.0000}", NEU_list[j, 0] + year) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,1]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,2]) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", NEU_list[j,3]) + Environment.NewLine);
                             }
                             Console.WriteLine("Successfully.");
