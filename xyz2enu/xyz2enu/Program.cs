@@ -55,11 +55,15 @@ namespace xyz2enu
 
             return count > 0 ? sum / count : double.NaN;
         }
+        static bool IsLeapYear(int year)
+        {
+            return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+        }
 
         static void Main(string[] args)
         {
             // Check if the user provided exactly three file paths
-            if (args.Length != 1)
+            if (args.Length != 2)
             {
                 Console.WriteLine("Please provide exactly three file paths as arguments.");
                 return;
@@ -80,14 +84,18 @@ namespace xyz2enu
                         Double X = Double.Parse(fields[1], CultureInfo.InvariantCulture);
                         Double Y = Double.Parse(fields[2], CultureInfo.InvariantCulture);
                         Double Z = Double.Parse(fields[3], CultureInfo.InvariantCulture);
-                        int year = 0;
+                        int year = int.Parse(args[1], CultureInfo.InvariantCulture);
+                        int n_day = 365;
 
-                        Double[,] TXYZ_list = new Double[365,4];
+                        if (IsLeapYear(year))
+                            n_day = 366;
+
+                        Double[,] TXYZ_list = new Double[n_day, 4];
 
                         // Initialize each list in the array
-                        for (int i = 0; i < 365; i++)
+                        for (int i = 0; i < n_day; i++)
                         {
-                            TXYZ_list[i, 0] = 0.5 / 365.0 + i / 365.0;
+                            TXYZ_list[i, 0] = 0.5 / n_day + 1 / n_day * i;
                             for (int j = 1; j < 4; j++)
                             {
                                 TXYZ_list[i, j] = Double.NaN;
@@ -125,8 +133,7 @@ namespace xyz2enu
                                         }
 
                                         Double T = Double.Parse(parts[0], CultureInfo.InvariantCulture);
-                                        year = (int)T;
-                                        rowid = (int)Math.Round(((T % 1) - (1.0 / (365.0 * 2))) * 365);
+                                        rowid = (int)Math.Round(((T % 1) - (1.0 / (n_day * 2))) * n_day);
 
                                         TXYZ_list[rowid, i] = Double.Parse(parts[1], CultureInfo.InvariantCulture);
                                     }
@@ -167,11 +174,11 @@ namespace xyz2enu
                             File.AppendAllText(outputfile2, "#Z:" + refZ.ToString($"F4", CultureInfo.InvariantCulture).PadLeft(14) + Environment.NewLine);
                             File.AppendAllText(outputfile2, "#   T         N        E        U" + Environment.NewLine);
 
-                            for (int j = 0; j < 365; j++)
+                            for (int j = 0; j < n_day; j++)
                             {
                                 var enu = XYZtoENU(TXYZ_list[j, 1], TXYZ_list[j, 2], TXYZ_list[j, 3], X, Y, Z);
-                                File.AppendAllText(outputfile, (0.5 + j + (year + 1) * 365.0).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
-                                File.AppendAllText(outputfile2, (0.5 / 365.0 + j / 365.0 + year).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(9) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
+                                File.AppendAllText(outputfile, (0.5 + j + (year + 1) * n_day).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(11) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
+                                File.AppendAllText(outputfile2, (0.5 / n_day + j / n_day + year).ToString($"F4", CultureInfo.InvariantCulture).PadLeft(9) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.N) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.E) + " " + string.Format(CultureInfo.InvariantCulture, "{0,7:0.0000}", enu.U) + Environment.NewLine);
                             }
                             Console.WriteLine("Successfully.");
                         }
